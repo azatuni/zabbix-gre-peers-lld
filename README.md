@@ -1,2 +1,2 @@
-# zabbix-gre-peers-lld
-Zabbix Low Level Discovery (LLD) for linux GRE peers
+# zabbix-lld-for-linux-gre
+Zabbix Low Level Discovery (LLD) for linux GRE peers monitoring
