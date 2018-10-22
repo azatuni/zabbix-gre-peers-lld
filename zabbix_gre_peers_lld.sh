@@ -1,6 +1,7 @@
 #!/bin/bash
+#Version: 1.1
+#Author: https://github.com/azatuni/zabbix-gre-peers-lld
 
-PACKET_COUNT_FOR_CHECK=2
 GRE_INTERFACE_NAME=`echo $@| grep -o 'gre\(\-[a-z]\{1,\}[0-9]\{0,\}\)\{1,2\}'| head -n1`
 
 function get_gre_interfaces_json () {
@@ -25,11 +26,11 @@ GRE_PEER_IP=`ip a| grep $GRE_INTERFACE_NAME| grep -o -E "\b([0-9]{1,3}\.){3}[0-9
 }
 
 function get_gre_peer_packet_loss () {
-ping -W 1 -w 1 -q -c "$PACKET_COUNT_FOR_CHECK" "$GRE_PEER_IP"|grep -o -e '[0-9]\{1,3\}%'|sed s/%//
+ping -w 2 -W 2 -i 0.2 "$GRE_PEER_IP"|grep -o -e '[0-9]\{1,3\}%'|sed s/%//
 }
 
 function get_gre_peer_rtt_avg () {
-ping -W 1 -w 1 -q -c "$PACKET_COUNT_FOR_CHECK" "$GRE_PEER_IP"| tail -n1|awk '{print $4}'| cut -d '/' -f2
+ping -w 2 -W 2 -i 0.2 "$GRE_PEER_IP"|tail -n1|awk '{print $4}'| cut -d '/' -f2
 }
 
 function gre_peers_zabbix_help () {
