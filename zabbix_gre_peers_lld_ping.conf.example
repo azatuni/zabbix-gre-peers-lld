@@ -1,0 +1,4 @@
+#This is gre peer ping configuration example
+#ping process period 'd be less then TIMEOUT configuration defiened in zabbix agent configuration file
+GRE_PEER_PING_INTERVAL=0.2
+GRE_PEER_PING_TIMEOUT=2
