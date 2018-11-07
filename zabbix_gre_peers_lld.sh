@@ -1,5 +1,5 @@
 #!/bin/bash
-#Version: 1.2
+#Version: 1.2.1
 #Author: https://github.com/azatuni/zabbix-gre-peers-lld
 
 function zbx_gre_lld_vars () {
@@ -62,7 +62,7 @@ echo -e "Usage: $0 --key (GRE_INTERFACE)
 "
 }
 
-zbx_gre_lld_vars
+zbx_gre_lld_vars $@
 check_gre_ping_conf
 
 case `echo $@| grep -o '\-\-get\-json\|\-\-check\-peer\-lose\|\-\-check\-peer\-rtt\|\-\-get\-peer\-ip\|\-\-help'` in
