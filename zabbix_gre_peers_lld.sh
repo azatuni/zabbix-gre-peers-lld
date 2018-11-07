@@ -1,5 +1,5 @@
 #!/bin/bash
-#Version: 1.2.1
+#Version: 1.2.2
 #Author: https://github.com/azatuni/zabbix-gre-peers-lld
 
 function zbx_gre_lld_vars () {
@@ -25,7 +25,7 @@ test -z $GRE_PEER_PING_TIMEOUT && echo "Fatal Error! GRE_PEER_PING_TIMEOUT varia
 
 function get_gre_interfaces_json () {
 GRE_INTERFACES=`ip a| grep -o 'gre\(\-[a-z]\{1,\}[0-9]\{0,\}\)\{1,2\}'| sort| uniq`
-test -z $GRE_INTERFACES && echo -e "Error! No gre interface parsed" && exit 3
+test -z `echo $GRE_INTERFACES| awk '{print $1}'` && echo -e "Error! No gre interface parsed" && exit 3
 echo '{'
 echo -e '\t"data":['
 for gre_interface in $GRE_INTERFACES
