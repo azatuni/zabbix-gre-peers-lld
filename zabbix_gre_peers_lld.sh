@@ -1,5 +1,5 @@
 #!/bin/bash
-#Version: 1.2.2
+#Version: 1.2.3
 #Author: https://github.com/azatuni/zabbix-gre-peers-lld
 
 function zbx_gre_lld_vars () {
@@ -50,7 +50,7 @@ ping -w "$GRE_PEER_PING_TIMEOUT" -W "$GRE_PEER_PING_TIMEOUT" -i "$GRE_PEER_PING_
 }
 
 function get_gre_peer_rtt_avg () {
-ping -w "$GRE_PEER_PING_TIMEOUT" -W "GRE_PEER_PING_TIMEOUT" -i "$GRE_PEER_PING_INTERVAL" "$GRE_PEER_IP"|tail -n1|awk '{print $4}'| cut -d '/' -f2
+ping -w "$GRE_PEER_PING_TIMEOUT" -W "$GRE_PEER_PING_TIMEOUT" -i "$GRE_PEER_PING_INTERVAL" "$GRE_PEER_IP"|tail -n1|awk '{print $4}'| cut -d '/' -f2
 }
 
 function gre_peers_zabbix_help () {
