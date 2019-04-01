@@ -19,6 +19,6 @@ Zabbix Low Level Discovery (LLD) for linux GRE peers monitoring.
 6.  Restart zabbix-agent
   `service zabbix-agent restart`
 7.  Run a script for test and it'd return json object with gre interfaces
-  `/usr/local/scripts/zabbix_gre_peers_lld.sh --get-json  `
+    `/usr/local/scripts/zabbix_gre_peers_lld.sh --get-json  `
 8.  Import zabbix_gre_peers_lld.xml template to zabbix UI (Configuration > Templates > Import)
-9.  Attache "Template Linux GRE peers" template to GRE host<br>
+9.  Attache "Template Linux GRE peers" template to GRE host
