@@ -8,29 +8,17 @@ Zabbix Low Level Discovery (LLD) for linux GRE peers monitoring.
   `wget https://github.com/azatuni/zabbix-gre-peers-lld/archive/master.zip && unzip master.zip`
   or
   `git clone https://github.com/azatuni/zabbix-gre-peers-lld.git`
-2.  Move to zabbix_gre_peers_lld<br>
-<code>
-cd zabbix_gre_peers_lld
-</code><br>
-3.  Make a /usr/local/scripts directory<br>
-<code>
-mkdir -p /usr/local/scripts
-</code><br>
-4.  Copy script and config file example to /usr/local/scripts<br>
-<code>
-cp zabbix_gre_peers_lld.sh /usr/local/scripts && zabbix_gre_peers_lld_ping.conf.example /usr/local/scripts/zabbix_gre_peers_lld_ping.conf
-</code><br>
-5.  Copy zabbix-agent custom items to zabbix-agent include directory (Usually /etc/zabbix/zabbix_agentd.d/)<br>
-<code>
-cp zabbix_gre_peers_lld.conf /etc/zabbix/zabbix_agentd.d/
-</code><br>
-6.  Restart zabbix-agent<br>
-<code>
-service zabbix-agent restart
-</code><br>
-7.  Run a script for test and it'd return json object with gre interfaces<br>
-<code>
-/usr/local/scripts/zabbix_gre_peers_lld.sh --get-json  
-</code><br>
-8.  Import zabbix_gre_peers_lld.xml template to zabbix UI (Configuration > Templates > Import)<br>
+2. Move to zabbix_gre_peers_lld
+  `cd zabbix_gre_peers_lld`
+3. Make a /usr/local/scripts directory
+  `mkdir -p /usr/local/scripts`
+4. Copy script and config file example to /usr/local/scripts
+  `cp zabbix_gre_peers_lld.sh /usr/local/scripts && zabbix_gre_peers_lld_ping.conf.example /usr/local/scripts/zabbix_gre_peers_lld_ping.conf`
+5.  Copy zabbix-agent custom items to zabbix-agent include directory (Usually /etc/zabbix/zabbix_agentd.d/)
+  `cp zabbix_gre_peers_lld.conf /etc/zabbix/zabbix_agentd.d/`
+6.  Restart zabbix-agent
+  `service zabbix-agent restart`
+7.  Run a script for test and it'd return json object with gre interfaces
+  `/usr/local/scripts/zabbix_gre_peers_lld.sh --get-json  `
+8.  Import zabbix_gre_peers_lld.xml template to zabbix UI (Configuration > Templates > Import)
 9.  Attache "Template Linux GRE peers" template to GRE host<br>
