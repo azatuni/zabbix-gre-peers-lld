@@ -1,5 +1,5 @@
 #!/bin/bash
-#Version: 1.2.3
+#Version: 1.3.0
 #Author: https://github.com/azatuni/zabbix-gre-peers-lld
 
 function zbx_gre_lld_vars () {
@@ -40,8 +40,15 @@ echo -e '\t]'
 echo '}'
 }
 
-function get_gre_peer_ip () {
+function get_gre_peer_pub_ip () {
 unset GRE_PEER_IP
+test -z $GRE_INTERFACE_NAME && echo -e "No GRE interface defined as positional parameter" && exit 4
+GRE_PEER_IP=`ip a | grep -m1 $GRE_INTERFACE_NAME -A2| grep -o -E "\b([0-9]{1,3}\.){3}[0-9]{1,3}\b$"`
+}
+
+function get_gre_peer_tun_ip () {
+unset GRE_PEER_IP
+test -z $GRE_INTERFACE_NAME && echo -e "No GRE interface defined as positional parameter" && exit 4
 GRE_PEER_IP=`ip a| grep $GRE_INTERFACE_NAME| grep -o -E "\b([0-9]{1,3}\.){3}[0-9]{1,3}\b"| tail -n1`
 }
 
@@ -54,32 +61,47 @@ ping -w "$GRE_PEER_PING_TIMEOUT" -W "$GRE_PEER_PING_TIMEOUT" -i "$GRE_PEER_PING_
 }
 
 function gre_peers_zabbix_help () {
-echo -e "Usage: $0 --key (GRE_INTERFACE)
-\t--get-json\t\t\t\tparse all GRE interfaces to json for zabbix low level discovery
-\t--get-peer-ip GRE_INTERFACE\tshow GRE interface peer IP address
-\t--check-peer-lose GRE_INTERFACE\tcheck ping packet loss to GRE peer in precentage
-\t--check-peer-rtt GRE_INTERFACE\tcheck ping average to GRE peer in ms
+echo -e "Usage: $0 --key (GRE_INTERFACE_NAME)
+\t--get-json\t\t\t\t\tparse all GRE interfaces to json for zabbix low level discovery
+\t--get-peer-public-ip GRE_INTERFACE_NAME\t\tgrab GRE interface peer's public IP address
+\t--get-peer-tunnel-ip GRE_INTERFACE_NAME\t\tgrab GRE interface peer's tunnel IP address
+\t--check-peer-loss-public GRE_INTERFACE_NAME\tcheck ping packet loss to GRE peer in precentage
+\t--check-peer-rtt-public GRE_INTERFACE_NAME\tcheck ping average to GRE peer in ms
+\t--check-peer-loss-tunnel GRE_INTERFACE_NAME\tcheck ping packet loss to GRE peer in precentage
+\t--check-peer-rtt-tunnel GRE_INTERFACE_NAME\tcheck ping average to GRE peer in ms
 "
 }
 
 zbx_gre_lld_vars $@
 check_gre_ping_conf
 
-case `echo $@| grep -o '\-\-get\-json\|\-\-check\-peer\-lose\|\-\-check\-peer\-rtt\|\-\-get\-peer\-ip\|\-\-help'` in
+case `echo $@| grep -o '\-\-get\-json\|\-\-check\-peer\-loss\-public\|\-\-check\-peer\-loss\-tunnel\|\-\-check\-peer\-rtt\-public\|\-\-check\-peer\-rtt\-tunnel\|\-\-get\-peer\-ip\|\-\-help\|\-\-get\-peer\-public\-ip\|\-\-get\-peer\-tunnel\-ip'` in
 	--get-json)
 		get_gre_interfaces_json
 	;;
-	--check-peer-lose)
-		get_gre_peer_ip
+	--get-peer-public-ip)
+		get_gre_peer_pub_ip
+		echo "$GRE_PEER_IP"
+	;;
+	--get-peer-tunnel-ip)
+		get_gre_peer_tun_ip
+		echo "$GRE_PEER_IP"
+	;;
+	--check-peer-loss-public)
+		get_gre_peer_pub_ip
 		get_gre_peer_packet_loss
 	;;
-	--check-peer-rtt)
-		get_gre_peer_ip
+	--check-peer-loss-tunnel)
+		get_gre_peer_tun_ip
+		get_gre_peer_packet_loss
+	;;
+	--check-peer-rtt-public)
+		get_gre_peer_pub_ip
 		get_gre_peer_rtt_avg
 	;;
-	--get-peer-ip)
-		get_gre_peer_ip
-		echo "$GRE_PEER_IP"
+	--check-peer-rtt-tunnel)
+		get_gre_peer_tun_ip
+		get_gre_peer_rtt_avg
 	;;
 	--help)
 		gre_peers_zabbix_help	
